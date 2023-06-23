@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" class="light">
+    <!-- BEGIN: Head -->
+    <head>
+        <meta charset="utf-8">
+        <link href="{% static 'images/logo.svg' %}" rel="shortcut icon">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>TeamTracker</title>
+        <!-- BEGIN: CSS Assets-->
+        <link rel="stylesheet" href="{% static 'TailwindCSS/css/app.css' %}" />
+        <!-- END: CSS Assets-->
+    </head>
+    <!-- END: Head -->
+    <div class = "main">
+        {% if not request.user.is_authenticated %}
+            {% include 'snippets/login-light-register.html' %}
+        {% else %}
+            {% include 'snippets/header.html' %}
+            <div class="flex overflow-hidden">
+            {% include 'snippets/side_menu.html' %}
+            <!-- Body -->
+            {% block content %}
+
+            {% endblock content %}
+            <!-- End Body -->
+            </div>
+        {% endif %}
+
+        {% include 'snippets/footer.html' %}
+    
+        <!-- BEGIN: JS Assets-->
+        <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ your_google_map_api_key }}&libraries=places"></script>
+        <script src="{% static 'TailwindCSS/js/app.js' %}"></script>
+        <!-- END: JS Assets-->
+    </div>
+
+</html>
