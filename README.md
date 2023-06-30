@@ -37,4 +37,4 @@ TeamTrack is a web-based project management tool that helps teams collaborate, t
 
 ## Authors
 
-- John Doe - [GitHub](https://github.com/OmarElati)
+- OmarElati - [GitHub](https://github.com/OmarElati)
