@@ -9,8 +9,11 @@ from rest_framework.response import Response
 from django.http import JsonResponse
  
  
+def create_gantt_view(request):
+    return render(request, 'gantt/create_gantt.html')
+ 
 def index(request):
-    return render(request, 'gantt/index.html')
+    return render(request, 'gantt/gantt.html')
  
 @api_view(['GET'])
 def data_list(request, offset):

@@ -5,38 +5,41 @@ from django.conf import settings
 
 from account.forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
 from account.models import Account
+from django.contrib.auth.decorators import login_required
 
 
-def register_view(request, *args, **kwargs):
-	user = request.user
-	if user.is_authenticated: 
-		return HttpResponse("You are already authenticated as " + str(user.email))
+def register_view(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            password1 = form.cleaned_data.get('password1')
+            password2 = form.cleaned_data.get('password2')
+            if password1 != password2:
+                form.add_error('password2', "Passwords do not match")
+            else:
+                first_name = form.cleaned_data.get('first_name')
+                last_name = form.cleaned_data.get('last_name')
+                email = form.cleaned_data.get('email').lower()
 
-	context = {}
-	if request.POST:
-		form = RegistrationForm(request.POST)
-		if form.is_valid():
-			form.save()
-			email = form.cleaned_data.get('email').lower()
-			raw_password = form.cleaned_data.get('password1')
-			account = authenticate(email=email, password=raw_password)
-			login(request, account)
-			destination = kwargs.get("next")
-			if destination:
-				return redirect(destination)
-			return redirect('home')
-		else:
-			context['registration_form'] = form
+                # Create the User object
+                user = Account.objects.create_user(
+                    email=email,
+                    password=password1,
+                    first_name=first_name,
+                    last_name=last_name
+                )
 
-	else:
-		form = RegistrationForm()
-		context['registration_form'] = form
-	return render(request, 'account/login-light-register.html', context)
+                login(request, user)
+                return redirect('home')
+    else:
+        form = RegistrationForm()
+
+    return render(request, 'account/login-light-register.html', {'form': form})
 
 
 def logout_view(request):
 	logout(request)
-	return redirect("account/login-light-register.html")
+	return redirect("login")
 
 
 def login_view(request, *args, **kwargs):
@@ -66,7 +69,6 @@ def login_view(request, *args, **kwargs):
 		form = AccountAuthenticationForm()
 
 	context['login_form'] = form
-
 	return render(request, "account/login-light-login.html", context)
 
 
@@ -99,6 +101,13 @@ def account_view(request, *args, **kwargs):
 		context['email'] = account.email
 		context['profile_image'] = account.profile_image.url
 		context['hide_email'] = account.hide_email
+		context['first_name'] = account.first_name
+		context['last_name'] = account.last_name
+		context['address'] = account.address
+		context['phone_number'] = account.phone_number
+		context['bank'] = account.bank
+		context['id_type'] = account.id_type
+		context['id_type'] = account.bank_account
 
 		# Define template variables
 		is_self = True
@@ -143,16 +152,33 @@ def edit_account_view(request, *args, **kwargs):
 		form = AccountUpdateForm(request.POST, request.FILES, instance=request.user)
 		if form.is_valid():
 			account.profile_image.delete()
+			account.email = form.cleaned_data['email']
+			account.username = form.cleaned_data['username']
+			account.first_name = form.cleaned_data['first_name']
+			account.last_name = form.cleaned_data['last_name']
+			account.hide_email = form.cleaned_data['hide_email']
+			account.phone_number = form.cleaned_data['phone_number']
+			account.address = form.cleaned_data['address']
+			account.bank = form.cleaned_data['bank']
+			account.id_type = form.cleaned_data['id_type']
+			account.bank_account = form.cleaned_data['bank_account']
 			form.save()
 			return redirect("account:view", user_id=account.pk)
 		else:
 			form = AccountUpdateForm(request.POST, instance=request.user,
 				initial={
 					"id": account.pk,
-					"email": account.email, 
+					"email": account.email,
 					"username": account.username,
+					"first_name": account.first_name,
+					"last_name": account.last_name,
 					"profile_image": account.profile_image,
 					"hide_email": account.hide_email,
+					"id_type": account.id_type,
+					"phone_number": account.phone_number,
+					"address": account.address,
+					"bank": account.bank,
+					"bank_account": account.bank_account,
 				}
 			)
 			context['form'] = form
@@ -160,12 +186,20 @@ def edit_account_view(request, *args, **kwargs):
 		form = AccountUpdateForm(
 			initial={
 					"id": account.pk,
-					"email": account.email, 
+					"email": account.email,
 					"username": account.username,
+					"first_name": account.first_name,
+					"last_name": account.last_name,
 					"profile_image": account.profile_image,
 					"hide_email": account.hide_email,
+					"id_type": account.id_type,
+					"phone_number": account.phone_number,
+					"address": account.address,
+					"bank": account.bank,
+					"bank_account": account.bank_account,
 				}
 			)
 		context['form'] = form
 	context['DATA_UPLOAD_MAX_MEMORY_SIZE'] = settings.DATA_UPLOAD_MAX_MEMORY_SIZE
-	return render(request, "account/edit_account.html", context)
+	return render(request, "account/side-menu-light-update-profile.html", {'user_id': user_id})
+

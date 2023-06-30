@@ -6,11 +6,13 @@ from account.models import Account
 
 
 class RegistrationForm(UserCreationForm):
+	first_name = forms.CharField(max_length=30)
+	last_name = forms.CharField(max_length=30)
 	email = forms.EmailField(max_length=254, help_text='Required. Add a valid email address.')
 
 	class Meta:
 		model = Account
-		fields = ('email', 'username', 'password1', 'password2', )
+		fields = ('first_name', 'last_name', 'email', 'password1', 'password2')
 
 	def clean_email(self):
 		email = self.cleaned_data['email'].lower()
@@ -49,7 +51,7 @@ class AccountUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Account
-        fields = ('username', 'email', 'profile_image', 'hide_email' )
+        fields = ('username', 'email', 'profile_image', 'hide_email', 'bank', 'phone_number', 'bank_account')
 
     def clean_email(self):
         email = self.cleaned_data['email'].lower()

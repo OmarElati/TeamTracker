@@ -20,10 +20,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.conf.urls import include
+from django.contrib.auth.decorators import login_required
+from account import views
 
 
 from personal.views import (
-	home_screen_view
+	home_screen_view,
 )
 
 from account.views import (
@@ -31,10 +33,14 @@ from account.views import (
     login_view,
     logout_view,
     account_search_view,
+    edit_account_view,
 )
 
 from gantt.views import (
     index,
+)
+from create.views import (
+    create_account_view,
 )
 
 urlpatterns = [
@@ -44,9 +50,15 @@ urlpatterns = [
 
     path('register/', register_view, name="register"),
     path('login/', login_view, name="login"),
-    path('logout/', logout_view, name="logout"),
-    path('search/', account_search_view, name="search"),
-    path('index/', index, name="index"),
+    path('logout/', login_required(logout_view), name="logout"),
+    path('search/', login_required(account_search_view), name="search"),
+    path('gantt/', login_required(index), name="gantt"),
+    path('edit/',login_required(edit_account_view), name="edit"),
+    path('create/', include('create.urls', namespace='create')),
+    path('password_change/', include('password_change.urls')),
+    path('personal/', include('personal.urls')),
+    path('gantt/', include('gantt.urls')),
+
 
     # Password reset links (ref: https://github.com/django/django/blob/master/django/contrib/auth/views.py)
     path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(template_name='password_reset/password_change_done.html'), 
