@@ -1,0 +1,7 @@
+.gantt_data_area div,
+.gantt_grid div {
+    -ms-touch-action: none;
+    touch-action: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    border-radius: 30px;
+}

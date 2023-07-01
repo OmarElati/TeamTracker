@@ -3,33 +3,33 @@
 
 {% block content %}
 
-    <div id="gantt_here" style='width:100%; height:900px; top: 100px;'>
-    </div>
-    <script>
-        gantt.config.date_format = "%Y-%m-%d %H:%i";
-        gantt.config.order_branch = "marker";
-        gantt.config.order_branch_free = true;
-        gantt.config.open_tree_initially = true;
-        gantt.attachEvent("onLoadEnd", function() {
-            gantt.batchUpdate(function() {
-                gantt.sort("sort_order", false)
-            })
-        });
-        gantt.attachEvent("onRowDragEnd", function(id, target) {
-            //update the order of tasks
-            gantt.batchUpdate(function() {
-                gantt.eachTask(function(task) {
-                    task.sort_order = task.$local_index + 1;
-                    gantt.updateTask(task.id)
-                })
-            })
-        });
-        gantt.attachEvent("onBeforeTaskAdd", function(id, task) {
+<div id="gantt_here" style='width:100%; height:900px; top: 100px;'>
+</div>
+<script>
+gantt.config.date_format = "%Y-%m-%d %H:%i";
+gantt.config.order_branch = "marker";
+gantt.config.order_branch_free = true;
+gantt.config.open_tree_initially = true;
+gantt.attachEvent("onLoadEnd", function() {
+    gantt.batchUpdate(function() {
+        gantt.sort("sort_order", false)
+    })
+});
+gantt.attachEvent("onRowDragEnd", function(id, target) {
+    //update the order of tasks
+    gantt.batchUpdate(function() {
+        gantt.eachTask(function(task) {
             task.sort_order = task.$local_index + 1;
-            return true;
-        });
-        gantt.init("gantt_here");
-        gantt.load("/data/", "json");
-    </script>
+            gantt.updateTask(task.id)
+        })
+    })
+});
+gantt.attachEvent("onBeforeTaskAdd", function(id, task) {
+    task.sort_order = task.$local_index + 1;
+    return true;
+});
+gantt.init("gantt_here");
+gantt.load("tasks.json");
+</script>
 
 {% endblock content %}

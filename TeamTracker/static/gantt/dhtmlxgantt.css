@@ -44,7 +44,8 @@
 
 .gantt_task .gantt_task_scale .gantt_scale_cell {
     color: #a6a6a6;
-    border-right: 1px solid #ebebeb
+    border-radius: 30px;
+    border-right: 1px solid #ebebeb;
 }
 
 .gantt_row.gantt_project,
@@ -172,6 +173,7 @@
     position: relative;
     overflow-x: hidden;
     overflow-y: hidden;
+    border-radius: 30px;
     display: inline-block;
     vertical-align: top;
 }
@@ -764,13 +766,6 @@ div.dhx_modal_cover {
     background-color: #ff9000;
     border: 1px solid #b36500;
     color: #fff
-}
-
-.gantt_data_area div,
-.gantt_grid div {
-    -ms-touch-action: none;
-    touch-action: none;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .gantt_data_area {

@@ -4,7 +4,7 @@
 <nav class="side-nav">
     <ul>
         <li>
-            <a href="javascript:;" class="side-menu side-menu--active">
+            <a href="javascript:;" class="side-menu">
                 <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
                 <div class="side-menu__title">
                     Home
@@ -13,7 +13,7 @@
         </li>
         <div class="side-nav__devider my-3"></div>
         <li>
-            <a href="javascript:;" class="side-menu side-menu--active">
+            <a href="javascript:;" class="side-menu">
                 <div class="side-menu__icon"> <i data-lucide="box"></i> </div>
                 <div class="side-menu__title">
                     gantt charts
@@ -22,45 +22,55 @@
         </li>
         <div class="side-nav__devider my-3"></div>
         <li>
-            <a href="side-menu-light-chat.html" class="side-menu side-menu--active">
+            <a href="side-menu-light-chat.html" class="side-menu">
                 <div class="side-menu__icon"> <i data-lucide="message-square"></i> </div>
                 <div class="side-menu__title"> Chat </div>
             </a>
         </li>
         <div class="side-nav__devider my-3"></div>
         <li>
-            <a href="side-menu-light-calendar.html" class="side-menu side-menu--active">
+            <a href="side-menu-light-calendar.html" class="side-menu">
                 <div class="side-menu__icon"> <i data-lucide="calendar"></i> </div>
                 <div class="side-menu__title"> Calendar </div>
             </a>
         </li>
         <div class="side-nav__devider my-3"></div>
         <li>
-            <a href="{% url 'create:create_account' %}" class="side-menu side-menu--active">
+            <a href="{% url 'create:create_account' %}" class="side-menu">
                 <div class="side-menu__icon"> <i data-lucide="users"></i> </div>
                 <div class="side-menu__title">
                     Users
                 </div>
             </a>
             <div class="side-nav__devider my-3"></div>
-            <a href="{% url 'personal:profile' username=request.user.username %}" class="side-menu side-menu--active">
+            <a href="{% url 'personal:profile' username=request.user.username %}" class="side-menu">
                 <div class="side-menu__icon"> <i data-lucide="trello"></i> </div>
                 <div class="side-menu__title">
                     Profile 
                 </div>
             </a>
             <div class="side-nav__devider my-3"></div>
-            <a href="{% url 'account:edit' user_id=request.user.id %}" class="side-menu side-menu--active">
+            <a href="{% url 'account:edit' user_id=request.user.id %}" class="side-menu">
                 <div class="side-menu__icon"> <i data-lucide="edit"></i> </div>
                 <div class="side-menu__title">
                     Update profile 
                 </div>
             </a>
             <div class="side-nav__devider my-3"></div>
-            <a href="{% url 'password_change:change_password' user_id=request.user.id %}" class="side-menu side-menu--active">
-                <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+            <a href="{% url 'password_change:change_password' user_id=request.user.id %}" class="side-menu">
+                <div class="side-menu__icon"> <i data-lucide="lock"></i> </div>
                 <div class="side-menu__title"> Change Password </div>
             </a>
     </ul>
 </nav>
-<!-- END: Side Menu -->
+<!-- END: Side Menu -->*
+
+<script>
+    $(document).ready(function() {
+        $('.side-menu').click(function() {
+            $('.side-menu').removeClass('side-menu--active');
+            $(this).addClass('side-menu--active');
+        });
+    });
+</script>
+
