@@ -12,6 +12,10 @@ def register_view(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
+            username = form.cleaned_data['username']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            email = form.cleaned_data['email']
             password1 = form.cleaned_data.get('password1')
             password2 = form.cleaned_data.get('password2')
             if password1 != password2:
@@ -21,13 +25,7 @@ def register_view(request):
                 last_name = form.cleaned_data.get('last_name')
                 email = form.cleaned_data.get('email').lower()
 
-                # Create the User object
-                user = Account.objects.create_user(
-                    email=email,
-                    password=password1,
-                    first_name=first_name,
-                    last_name=last_name
-                )
+                user = Account.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email, password1=password2)
 
                 login(request, user)
                 return redirect('home')

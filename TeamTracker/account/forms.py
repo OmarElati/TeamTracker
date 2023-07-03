@@ -6,13 +6,11 @@ from account.models import Account
 
 
 class RegistrationForm(UserCreationForm):
-	first_name = forms.CharField(max_length=30)
-	last_name = forms.CharField(max_length=30)
 	email = forms.EmailField(max_length=254, help_text='Required. Add a valid email address.')
 
 	class Meta:
 		model = Account
-		fields = ('first_name', 'last_name', 'email', 'password1', 'password2')
+		fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
 
 	def clean_email(self):
 		email = self.cleaned_data['email'].lower()

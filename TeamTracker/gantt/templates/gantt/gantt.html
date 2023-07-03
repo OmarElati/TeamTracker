@@ -7,14 +7,18 @@
 </div>
 <script>
 gantt.config.date_format = "%Y-%m-%d %H:%i";
+
 gantt.config.order_branch = "marker";
 gantt.config.order_branch_free = true;
+
 gantt.config.open_tree_initially = true;
+
 gantt.attachEvent("onLoadEnd", function() {
     gantt.batchUpdate(function() {
         gantt.sort("sort_order", false)
     })
 });
+
 gantt.attachEvent("onRowDragEnd", function(id, target) {
     //update the order of tasks
     gantt.batchUpdate(function() {
@@ -24,12 +28,42 @@ gantt.attachEvent("onRowDragEnd", function(id, target) {
         })
     })
 });
+
 gantt.attachEvent("onBeforeTaskAdd", function(id, task) {
     task.sort_order = task.$local_index + 1;
     return true;
 });
+
+gantt.plugins({tooltip: true}); 
+gantt.templates.tooltip_text = function(start,end,task){
+    return "<b>Task:</b> "+task.text+"<br/><b>Start date:</b> " + 
+    gantt.templates.tooltip_date_format(start)+ 
+    "<br/><b>End date:</b> "+gantt.templates.tooltip_date_format(end);
+};
+var daysStyle = function(date){
+    var dateToStr = gantt.date.date_to_str("%D");
+    if (dateToStr(date) == "Sun"||dateToStr(date) == "Sat") return "weekend";
+ 
+    return "";
+};
+
+gantt.config.scales = [
+    {unit:"day", format:"%D", css:daysStyle }
+];
+gantt.templates.timeline_cell_class = function(item,date){
+    if(date.getDay()==0||date.getDay()==6){
+        return "weekend"
+    }
+};
+gantt.templates.task_text=function(start,end,task){
+    return "<b>Text:</b> "+task.text+",<b> Holders:</b> "+task.users;
+};
+
 gantt.init("gantt_here");
-gantt.load("tasks.json");
+gantt.load("/data/", "json");
+var dp = new gantt.dataProcessor("/data/");
+dp.init(gantt);
+dp.setTransactionMode("REST");
 </script>
 
 {% endblock content %}
