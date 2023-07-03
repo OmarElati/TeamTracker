@@ -13,9 +13,6 @@ def register_view(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
-            email = form.cleaned_data['email']
             password1 = form.cleaned_data.get('password1')
             password2 = form.cleaned_data.get('password2')
             if password1 != password2:

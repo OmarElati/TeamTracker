@@ -16,9 +16,9 @@ class RegistrationForm(UserCreationForm):
 		email = self.cleaned_data['email'].lower()
 		try:
 			account = Account.objects.exclude(pk=self.instance.pk).get(email=email)
+			raise forms.ValidationError('Email "%s" is already in use.' % email)
 		except Account.DoesNotExist:
 			return email
-		raise forms.ValidationError('Email "%s" is already in use.' % account)
 
 	def clean_username(self):
 		username = self.cleaned_data['username']
