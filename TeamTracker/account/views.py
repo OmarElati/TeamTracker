@@ -11,25 +11,31 @@ from django.contrib.auth.decorators import login_required
 def register_view(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
+        print('aaa')
         if form.is_valid():
+            print('ppp')
             username = form.cleaned_data['username']
-            password1 = form.cleaned_data.get('password1')
-            password2 = form.cleaned_data.get('password2')
+            password1 = form.cleaned_data['password1']
+            password2 = form.cleaned_data['password2']
             if password1 != password2:
                 form.add_error('password2', "Passwords do not match")
             else:
                 first_name = form.cleaned_data.get('first_name')
                 last_name = form.cleaned_data.get('last_name')
                 email = form.cleaned_data.get('email').lower()
-
-                user = Account.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email, password1=password2)
+                print(first_name,last_name,email,password1,password2)
+                user = Account.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email, password=password1)
 
                 login(request, user)
                 return redirect('home')
+        else:
+            for field_name, errors in form.errors.items():
+                for error in errors:
+                    print(f"Error in {field_name}: {error}")
     else:
         form = RegistrationForm()
-
-    return render(request, 'account/login-light-register.html', {'form': form})
+    
+    return render(request, 'account/register.html', {'form': form})
 
 
 def logout_view(request):
@@ -64,7 +70,7 @@ def login_view(request, *args, **kwargs):
 		form = AccountAuthenticationForm()
 
 	context['login_form'] = form
-	return render(request, "account/login-light-login.html", context)
+	return render(request, "account/login.html", context)
 
 
 def get_redirect_if_exists(request):
@@ -76,14 +82,7 @@ def get_redirect_if_exists(request):
 
 
 def account_view(request, *args, **kwargs):
-	"""
-	- Logic here is kind of tricky
-		is_self (boolean)
-			is_friend (boolean)
-				-1: NO_REQUEST_SENT
-				0: THEM_SENT_TO_YOU
-				1: YOU_SENT_TO_THEM
-	"""
+
 	context = {}
 	user_id = kwargs.get("user_id")
 	try:
@@ -120,19 +119,6 @@ def account_view(request, *args, **kwargs):
 		return render(request, "account/account.html", context)
 
 
-def account_search_view(request, *args, **kwargs):
-	context = {}
-	if request.method == "GET":
-		search_query = request.GET.get("q")
-		if len(search_query) > 0:
-			search_results = Account.objects.filter(email__icontains=search_query).filter(username__icontains=search_query).distinct()
-			user = request.user
-			accounts = [] # [(account1, True), (account2, False), ...]
-			for account in search_results:
-				accounts.append((account, False)) # you have no friends yet
-			context['accounts'] = accounts
-				
-	return render(request, "account/search_results.html", context)
 
 
 def edit_account_view(request, *args, **kwargs):
@@ -196,5 +182,5 @@ def edit_account_view(request, *args, **kwargs):
 			)
 		context['form'] = form
 	context['DATA_UPLOAD_MAX_MEMORY_SIZE'] = settings.DATA_UPLOAD_MAX_MEMORY_SIZE
-	return render(request, "account/side-menu-light-update-profile.html", {'user_id': user_id})
+	return render(request, "account/update-profile.html", {'user_id': user_id})
 

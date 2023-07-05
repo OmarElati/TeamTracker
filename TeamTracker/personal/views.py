@@ -11,7 +11,7 @@ def home_screen_view(request):
     last_name = account.last_name
     context = {
         'first_name': first_name,
-        'last_name': last_name
+        'last_name': last_name,
     }
-    
-    return render(request, "personal/side-menu-light-profile-overview-1.html", context)
+
+    return render(request, "personal/profile.html", context)

@@ -30,6 +30,7 @@ def data_list(request, offset):
  
 @api_view(['POST'])
 def task_add(request):
+    print("aa")
     if request.method == 'POST':
         serializer = TaskSerializer(data=request.data)
         print(serializer)

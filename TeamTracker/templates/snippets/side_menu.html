@@ -4,7 +4,7 @@
 <nav class="side-nav">
     <ul>
         <li>
-            <a href="javascript:;" class="side-menu">
+            <a href="" class="side-menu">
                 <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
                 <div class="side-menu__title">
                     Home
@@ -13,7 +13,7 @@
         </li>
         <div class="side-nav__devider my-3"></div>
         <li>
-            <a href="javascript:;" class="side-menu">
+            <a href="{% url 'gantt:index' %}" class="side-menu">
                 <div class="side-menu__icon"> <i data-lucide="box"></i> </div>
                 <div class="side-menu__title">
                     gantt charts
@@ -43,7 +43,7 @@
                 </div>
             </a>
             <div class="side-nav__devider my-3"></div>
-            <a href="{% url 'personal:profile' username=request.user.username %}" class="side-menu">
+            <a href="{% url 'personal:profile' %}" class="side-menu">
                 <div class="side-menu__icon"> <i data-lucide="trello"></i> </div>
                 <div class="side-menu__title">
                     Profile 

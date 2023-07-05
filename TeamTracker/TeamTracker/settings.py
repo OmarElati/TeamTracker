@@ -32,7 +32,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'oe.etudiant@gmail.com'
-EMAIL_HOST_PASSWORD = '93156234omar'
+EMAIL_HOST_PASSWORD = 'dcjqvwntfxtxikse'
 EMAIL_DEBUG = True
 
 

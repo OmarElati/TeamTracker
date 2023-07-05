@@ -1,14 +1,6 @@
 from django.db import models
  
-class Task(models.Model):
-    id = models.AutoField(primary_key=True, editable=False)
-    text = models.CharField(blank=True, max_length=100)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    duration = models.IntegerField()
-    progress = models.FloatField()
-    parent = models.CharField(max_length=100)
- 
+
 class Link(models.Model):
     id = models.AutoField(primary_key=True, editable=False)
     source = models.CharField(max_length=100)
