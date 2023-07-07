@@ -16,7 +16,7 @@ def index(request):
     return render(request, 'gantt/gantt.html')
  
 @api_view(['GET'])
-def data_list(request, offset):
+def data_list(request, offset): # returns the serialized data in a JSON response
     if request.method == 'GET':
         tasks = Task.objects.all()
         links = Link.objects.all()
@@ -29,7 +29,7 @@ def data_list(request, offset):
  
  
 @api_view(['POST'])
-def task_add(request):
+def task_add(request): # request for adding a new task
     print("aa")
     if request.method == 'POST':
         serializer = TaskSerializer(data=request.data)
@@ -41,7 +41,7 @@ def task_add(request):
         return JsonResponse({'action':'error'})
  
 @api_view(['PUT', 'DELETE'])
-def task_update(request, pk):
+def task_update(request, pk): # PUT and DELETE requests for updating || deleting a task with the specified primary key pk
     try:
         task = Task.objects.get(pk=pk)
     except Task.DoesNotExist:
@@ -61,7 +61,7 @@ def task_update(request, pk):
  
  
 @api_view(['POST'])
-def link_add(request):
+def link_add(request): # POST request for adding a new link
     if request.method == 'POST':
         serializer = LinkSerializer(data=request.data)
         print(serializer)
@@ -72,7 +72,7 @@ def link_add(request):
         return JsonResponse({'action':'error'})
  
 @api_view(['PUT', 'DELETE'])
-def link_update(request, pk):
+def link_update(request, pk): #  PUT and DELETE requests for updating || deleting a link with the specified primary key pk
     try:
         link = Link.objects.get(pk=pk)
     except Link.DoesNotExist:

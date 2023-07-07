@@ -9,12 +9,11 @@ import string
 from django.shortcuts import render, redirect
 from .models import Worker, Task, TaskCompletion, Notification
 from .forms import WorkerCreationForm
-
-
 from django.db.models import Count
 from .forms import WorkerCreationForm
 from .models import Worker
 from django.contrib.auth.models import User
+
 
 def create_account_view(request):
     if request.method == 'POST':

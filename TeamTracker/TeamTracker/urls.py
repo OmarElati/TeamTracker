@@ -32,16 +32,13 @@ from account.views import (
     register_view,
     login_view,
     logout_view,
-    account_search_view,
     edit_account_view,
 )
 
 from gantt.views import (
     index,
 )
-from create.views import (
-    create_account_view,
-)
+
 
 urlpatterns = [
         path('', home_screen_view, name='home'),
@@ -51,7 +48,6 @@ urlpatterns = [
     path('register/', register_view, name="register"),
     path('login/', login_view, name="login"),
     path('logout/', login_required(logout_view), name="logout"),
-    path('search/', login_required(account_search_view), name="search"),
     path('gantt/', login_required(index), name="gantt"),
     path('edit/',login_required(edit_account_view), name="edit"),
     path('create/', include('create.urls', namespace='create')),

@@ -4,8 +4,9 @@ from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
-@login_required
-def change_password(request, user_id):
+
+@login_required # Only accessible for authenticated users.
+def change_password(request, user_id): # changing the password of the authenticated user
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():

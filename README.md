@@ -17,7 +17,7 @@ TeamTrack is a web-based project management tool that helps teams collaborate, t
 
 - Django (Backend framework)
 - MySQL (Relational database)
-- HTML, CSS, JavaScript (Frontend)
+- HTML, TailwindCSS, JavaScript (Frontend)
 
 ## Installation
 

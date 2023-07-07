@@ -2,18 +2,15 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from django.conf import settings
-
 from account.forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
 from account.models import Account
 from django.contrib.auth.decorators import login_required
 
 
-def register_view(request):
+def register_view(request): # function for handling user registration
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
-        print('aaa')
         if form.is_valid():
-            print('ppp')
             username = form.cleaned_data['username']
             password1 = form.cleaned_data['password1']
             password2 = form.cleaned_data['password2']
@@ -38,12 +35,12 @@ def register_view(request):
     return render(request, 'account/register.html', {'form': form})
 
 
-def logout_view(request):
+def logout_view(request): # function for handling user logout
 	logout(request)
 	return redirect("login")
 
 
-def login_view(request, *args, **kwargs):
+def login_view(request, *args, **kwargs): # function for handling user login
 	context = {}
 
 	user = request.user
@@ -73,7 +70,7 @@ def login_view(request, *args, **kwargs):
 	return render(request, "account/login.html", context)
 
 
-def get_redirect_if_exists(request):
+def get_redirect_if_exists(request): # Retrieves the redirect URL if it exists in the request's GET parameters
 	redirect = None
 	if request.GET:
 		if request.GET.get("next"):
@@ -81,7 +78,7 @@ def get_redirect_if_exists(request):
 	return redirect
 
 
-def account_view(request, *args, **kwargs):
+def account_view(request, *args, **kwargs): # Retrieves and displays the account details for a specific user
 
 	context = {}
 	user_id = kwargs.get("user_id")
@@ -89,7 +86,7 @@ def account_view(request, *args, **kwargs):
 		account = Account.objects.get(pk=user_id)
 	except:
 		return HttpResponse("Something went wrong.")
-	if account:
+	if account: # Populate the context with account details
 		context['id'] = account.id
 		context['username'] = account.username
 		context['email'] = account.email
@@ -121,7 +118,7 @@ def account_view(request, *args, **kwargs):
 
 
 
-def edit_account_view(request, *args, **kwargs):
+def edit_account_view(request, *args, **kwargs): # Handles the editing of the user's account
 	if not request.user.is_authenticated:
 		return redirect("login")
 	user_id = kwargs.get("user_id")

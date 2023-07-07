@@ -4,8 +4,8 @@ from account.models import Account
 from django.contrib.auth.decorators import login_required
 
 
-@login_required
-def home_screen_view(request):
+@login_required # Only accessible for authenticated users
+def home_screen_view(request): # rendering the home screen view
     account = Account.objects.get(email=request.user.email)
     first_name = account.first_name
     last_name = account.last_name
